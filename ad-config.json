@@ -1,0 +1,92 @@
+{
+  "version": "1.0",
+  "adSlots": {
+    "header": {
+      "enabled": true,
+      "sizes": ["728x90", "468x60", "320x50"],
+      "type": "adsense",
+      "sticky": false,
+      "priority": 1
+    },
+    "in-content-1": {
+      "enabled": true,
+      "sizes": ["336x280", "300x250", "320x100"],
+      "type": "adsense",
+      "insertAfter": 3,
+      "priority": 2
+    },
+    "in-content-2": {
+      "enabled": true,
+      "sizes": ["336x280", "300x250", "320x100"],
+      "type": "adsense",
+      "insertAfter": 7,
+      "priority": 3
+    },
+    "in-content-3": {
+      "enabled": true,
+      "sizes": ["336x280", "300x250", "320x100"],
+      "type": "adsense",
+      "insertAfter": 11,
+      "priority": 4
+    },
+    "sidebar-sticky": {
+      "enabled": true,
+      "sizes": ["300x250", "300x600"],
+      "type": "mixed",
+      "sticky": true,
+      "priority": 5
+    },
+    "post-footer": {
+      "enabled": true,
+      "sizes": ["728x90", "468x60", "320x50"],
+      "type": "adsense",
+      "priority": 6
+    },
+    "footer": {
+      "enabled": true,
+      "sizes": ["728x90", "468x60", "320x50"],
+      "type": "adsense",
+      "priority": 7
+    },
+    "exit-intent": {
+      "enabled": true,
+      "sizes": ["300x250", "320x250"],
+      "type": "adsense",
+      "priority": 8
+    }
+  },
+  "settings": {
+    "autoOptimize": true,
+    "maxAdsPerPage": 6,
+    "minSpacingPx": 300,
+    "adFrequencyParagraphs": 3,
+    "lazyLoadThreshold": 200,
+    "viewabilityThreshold": 50,
+    "viewabilityTimeMs": 1000,
+    "abTestEnabled": true,
+    "abTestMinImpressions": 1000,
+    "exitIntentEnabled": true,
+    "exitIntentCooldownHours": 24,
+    "stickySidebar": true,
+    "lazyLoading": true,
+    "revenueTrackingEnabled": true
+  },
+  "networks": {
+    "adsense": {
+      "publisherId": "",
+      "autoAds": true,
+      "adFormat": "auto"
+    },
+    "monetag": {
+      "enabled": true,
+      "pushScript": "",
+      "popunderScript": ""
+    },
+    "adsterra": {
+      "enabled": true,
+      "nativeCode": "",
+      "socialBar": true,
+      "popunder": ""
+    }
+  }
+}
