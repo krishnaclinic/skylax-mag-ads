@@ -4,54 +4,54 @@
     "header": {
       "enabled": true,
       "sizes": ["728x90", "468x60", "320x50"],
-      "type": "adsense",
+      "type": "adsterra",
       "sticky": false,
       "priority": 1
     },
     "in-content-1": {
       "enabled": true,
       "sizes": ["336x280", "300x250", "320x100"],
-      "type": "adsense",
+      "type": "adsterra",
       "insertAfter": 3,
       "priority": 2
     },
     "in-content-2": {
       "enabled": true,
       "sizes": ["336x280", "300x250", "320x100"],
-      "type": "adsense",
+      "type": "adsterra",
       "insertAfter": 7,
       "priority": 3
     },
     "in-content-3": {
       "enabled": true,
       "sizes": ["336x280", "300x250", "320x100"],
-      "type": "adsense",
+      "type": "adsterra",
       "insertAfter": 11,
       "priority": 4
     },
     "sidebar-sticky": {
       "enabled": true,
       "sizes": ["300x250", "300x600"],
-      "type": "mixed",
+      "type": "adsterra",
       "sticky": true,
       "priority": 5
     },
     "post-footer": {
       "enabled": true,
       "sizes": ["728x90", "468x60", "320x50"],
-      "type": "adsense",
+      "type": "adsterra",
       "priority": 6
     },
     "footer": {
       "enabled": true,
       "sizes": ["728x90", "468x60", "320x50"],
-      "type": "adsense",
+      "type": "adsterra",
       "priority": 7
     },
     "exit-intent": {
       "enabled": true,
       "sizes": ["300x250", "320x250"],
-      "type": "adsense",
+      "type": "adsterra",
       "priority": 8
     }
   },
@@ -72,21 +72,11 @@
     "revenueTrackingEnabled": true
   },
   "networks": {
-    "adsense": {
-      "publisherId": "",
-      "autoAds": true,
-      "adFormat": "auto"
-    },
-    "monetag": {
-      "enabled": true,
-      "pushScript": "",
-      "popunderScript": ""
-    },
     "adsterra": {
       "enabled": true,
-      "nativeCode": "",
-      "socialBar": true,
-      "popunder": ""
+      "nativeCode": "<script async=\"async\" data-cfasync=\"false\" src=\"https://pl30190939.effectivecpmnetwork.com/be6cc85d45d4f054c1039371fff9d1b4/invoke.js\"></script><div id=\"container-be6cc85d45d4f054c1039371fff9d1b4\"></div>",
+      "popunderUrl": "https://pl30190938.effectivecpmnetwork.com/32/18/be/3218bed6add25bedc7bc98e3610a3783.js",
+      "socialBarUrl": "https://pl30190940.effectivecpmnetwork.com/62/d6/57/62d6570431b15d1f7a385b6af25caa60.js"
     }
   }
 }
