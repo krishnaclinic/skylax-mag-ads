@@ -12,14 +12,16 @@
   // ─── Default Configuration ───────────────────────────────
   var DEFAULT_CONFIG = {
     adSlots: {
-      'header':         { enabled: true, sizes: ['responsive'], type: 'adsterra', sticky: false },
-      'in-content-1':   { enabled: true, sizes: ['responsive'], type: 'adsterra', insertAfter: 3 },
-      'in-content-2':   { enabled: true, sizes: ['responsive'], type: 'adsterra', insertAfter: 7 },
-      'in-content-3':   { enabled: true, sizes: ['responsive'], type: 'adsterra', insertAfter: 11 },
-      'sidebar-sticky': { enabled: true, sizes: ['responsive'], type: 'adsterra', sticky: true },
-      'post-footer':    { enabled: true, sizes: ['responsive'], type: 'adsterra' },
-      'footer':         { enabled: true, sizes: ['responsive'], type: 'adsterra' },
-      'exit-intent':    { enabled: true, sizes: ['responsive'], type: 'adsterra' }
+      'header-banner':  { enabled: true, type: 'banner', size: '728x90' },
+      'mobile-banner':  { enabled: true, type: 'banner', size: '320x50' },
+      'native-banner':  { enabled: true, type: 'native' },
+      'in-content-1':   { enabled: true, type: 'banner', size: '300x250' },
+      'in-content-2':   { enabled: true, type: 'banner', size: '300x250' },
+      'sidebar-top':    { enabled: true, type: 'banner', size: '300x250' },
+      'sidebar-sticky': { enabled: true, type: 'banner', size: '160x600', sticky: true },
+      'footer-banner':  { enabled: true, type: 'banner', size: '728x90' },
+      'footer-mobile':  { enabled: true, type: 'banner', size: '320x50' },
+      'exit-intent':    { enabled: true, type: 'banner', size: '300x250' }
     },
     settings: {
       autoOptimize: true,
@@ -140,68 +142,22 @@
     }
   }
 
-  // ─── Theme Ad Injection ──────────────────────────────────
+  // ─── Theme Ad Detection ──────────────────────────────────
+  // All banner ads are now placed directly in the Blogger theme XML.
+  // This function detects them and registers them for tracking.
 
   var injectedSlots = {};
 
   function injectThemeAds() {
-    var containers = document.querySelectorAll('.ad-container');
-    var slotIndex = 0;
-
+    var containers = document.querySelectorAll('.ad-container[data-ad-slot]');
     for (var i = 0; i < containers.length; i++) {
-      var container = containers[i];
-      var slotId = container.getAttribute('data-ad-slot');
-
-      // Skip if already injected or no slot ID
-      if (!slotId || injectedSlots[slotId]) continue;
-
-      // Skip header — it already has invoke.js loaded in theme
-      if (slotId === 'header') {
+      var slotId = containers[i].getAttribute('data-ad-slot');
+      if (slotId && !injectedSlots[slotId]) {
         injectedSlots[slotId] = true;
         adsLoaded++;
-        continue;
+        trackImpression(slotId);
+        log('Ad detected: ' + slotId);
       }
-
-      // Skip if ad not enabled in config
-      if (!config.adSlots[slotId] || !config.adSlots[slotId].enabled) continue;
-
-      // Skip if max ads reached
-      if (adsLoaded >= config.settings.maxAdsPerPage) {
-        container.style.display = 'none';
-        continue;
-      }
-
-      // Inject Adsterra native ad with unique container ID
-      var uniqueId = 'adsterra-slot-' + slotId + '-' + Date.now();
-      var scriptSrc = config.networks.adsterra.nativeCode;
-
-      // Extract script URL from the native code
-      var scriptMatch = scriptSrc.match(/src=['"]([^'"]+)['"]/);
-      if (!scriptMatch) continue;
-
-      // Create script tag
-      var script = document.createElement('script');
-      script.async = true;
-      script.setAttribute('data-cfasync', 'false');
-      script.src = scriptMatch[1];
-
-      // Create unique container div
-      var adDiv = document.createElement('div');
-      adDiv.id = uniqueId;
-
-      // Clear container and inject
-      var label = container.querySelector('.ad-label');
-      container.innerHTML = '';
-      if (label) container.appendChild(label);
-      container.appendChild(script);
-      container.appendChild(adDiv);
-
-      injectedSlots[slotId] = true;
-      adsLoaded++;
-      trackImpression(slotId);
-      log('Injected ad: ' + slotId + ' → ' + uniqueId);
-
-      slotIndex++;
     }
   }
 

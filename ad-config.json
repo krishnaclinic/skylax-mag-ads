@@ -1,58 +1,70 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "adSlots": {
-    "header": {
+    "header-banner": {
       "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
-      "sticky": false,
+      "type": "banner",
+      "size": "728x90",
+      "positions": ["desktop"],
       "priority": 1
+    },
+    "mobile-banner": {
+      "enabled": true,
+      "type": "banner",
+      "size": "320x50",
+      "positions": ["mobile"],
+      "priority": 2
     },
     "in-content-1": {
       "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
+      "type": "banner",
+      "size": "300x250",
       "insertAfter": 3,
-      "priority": 2
+      "priority": 3
     },
     "in-content-2": {
       "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
+      "type": "banner",
+      "size": "300x250",
       "insertAfter": 7,
-      "priority": 3
-    },
-    "in-content-3": {
-      "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
-      "insertAfter": 11,
       "priority": 4
+    },
+    "sidebar-top": {
+      "enabled": true,
+      "type": "banner",
+      "size": "300x250",
+      "priority": 5
     },
     "sidebar-sticky": {
       "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
+      "type": "banner",
+      "size": "160x600",
       "sticky": true,
-      "priority": 5
+      "priority": 6
     },
     "post-footer": {
       "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
-      "priority": 6
-    },
-    "footer": {
-      "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
+      "type": "banner",
+      "size": "300x250",
       "priority": 7
+    },
+    "footer-banner": {
+      "enabled": true,
+      "type": "banner",
+      "size": "728x90",
+      "positions": ["desktop"],
+      "priority": 8
+    },
+    "native-banner": {
+      "enabled": true,
+      "type": "native",
+      "priority": 9
     },
     "exit-intent": {
       "enabled": true,
-      "sizes": ["responsive"],
-      "type": "adsterra",
-      "priority": 8
+      "type": "banner",
+      "size": "300x250",
+      "priority": 10
     }
   },
   "settings": {
@@ -76,7 +88,46 @@
       "enabled": true,
       "nativeCode": "<script async=\"async\" data-cfasync=\"false\" src=\"https://pl30190939.effectivecpmnetwork.com/be6cc85d45d4f054c1039371fff9d1b4/invoke.js\"></script><div id=\"container-be6cc85d45d4f054c1039371fff9d1b4\"></div>",
       "popunderUrl": "https://pl30190938.effectivecpmnetwork.com/32/18/be/3218bed6add25bedc7bc98e3610a3783.js",
-      "socialBarUrl": "https://pl30190940.effectivecpmnetwork.com/62/d6/57/62d6570431b15d1f7a385b6af25caa60.js"
+      "socialBarUrl": "https://pl30190940.effectivecpmnetwork.com/62/d6/57/62d6570431b15d1f7a385b6af25caa60.js",
+      "smartlinkUrl": "https://www.effectivecpmnetwork.com/yna9kjk7s?key=e4b1f991a843eabf7a68af99edb2a137",
+      "banners": {
+        "728x90": {
+          "key": "6a23db265f7213647c4b4d0dab0fe3d4",
+          "scriptUrl": "https://www.highperformanceformat.com/6a23db265f7213647c4b4d0dab0fe3d4/invoke.js",
+          "width": 728,
+          "height": 90
+        },
+        "300x250": {
+          "key": "e24460c93907afa0ae70db5d74e42097",
+          "scriptUrl": "https://www.highperformanceformat.com/e24460c93907afa0ae70db5d74e42097/invoke.js",
+          "width": 300,
+          "height": 250
+        },
+        "160x300": {
+          "key": "298ed666c65ab98f907c0fe9fdc5fc73",
+          "scriptUrl": "https://www.highperformanceformat.com/298ed666c65ab98f907c0fe9fdc5fc73/invoke.js",
+          "width": 160,
+          "height": 300
+        },
+        "160x600": {
+          "key": "8e20f858214a6aa939039f62fd29a69f",
+          "scriptUrl": "https://www.highperformanceformat.com/8e20f858214a6aa939039f62fd29a69f/invoke.js",
+          "width": 160,
+          "height": 600
+        },
+        "320x50": {
+          "key": "2809b5195173b361010b95b1ce546e65",
+          "scriptUrl": "https://www.highperformanceformat.com/2809b5195173b361010b95b1ce546e65/invoke.js",
+          "width": 320,
+          "height": 50
+        },
+        "468x60": {
+          "key": "19c0e1b6c1054a28c73b4cb274f2d9e2",
+          "scriptUrl": "https://www.highperformanceformat.com/19c0e1b6c1054a28c73b4cb274f2d9e2/invoke.js",
+          "width": 468,
+          "height": 60
+        }
+      }
     }
   }
 }
