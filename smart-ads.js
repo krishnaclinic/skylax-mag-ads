@@ -12,14 +12,14 @@
   // ─── Default Configuration ───────────────────────────────
   var DEFAULT_CONFIG = {
     adSlots: {
-      'header':         { enabled: true, sizes: ['728x90','468x60','320x50'], type: 'adsterra', sticky: false },
-      'in-content-1':   { enabled: true, sizes: ['336x280','300x250','320x100'], type: 'adsterra', insertAfter: 3 },
-      'in-content-2':   { enabled: true, sizes: ['336x280','300x250','320x100'], type: 'adsterra', insertAfter: 7 },
-      'in-content-3':   { enabled: true, sizes: ['336x280','300x250','320x100'], type: 'adsterra', insertAfter: 11 },
-      'sidebar-sticky': { enabled: true, sizes: ['300x250','300x600'], type: 'adsterra', sticky: true },
-      'post-footer':    { enabled: true, sizes: ['728x90','468x60','320x50'], type: 'adsterra' },
-      'footer':         { enabled: true, sizes: ['728x90','468x60','320x50'], type: 'adsterra' },
-      'exit-intent':    { enabled: true, sizes: ['300x250','320x250'], type: 'adsterra' }
+      'header':         { enabled: true, sizes: ['responsive'], type: 'adsterra', sticky: false },
+      'in-content-1':   { enabled: true, sizes: ['responsive'], type: 'adsterra', insertAfter: 3 },
+      'in-content-2':   { enabled: true, sizes: ['responsive'], type: 'adsterra', insertAfter: 7 },
+      'in-content-3':   { enabled: true, sizes: ['responsive'], type: 'adsterra', insertAfter: 11 },
+      'sidebar-sticky': { enabled: true, sizes: ['responsive'], type: 'adsterra', sticky: true },
+      'post-footer':    { enabled: true, sizes: ['responsive'], type: 'adsterra' },
+      'footer':         { enabled: true, sizes: ['responsive'], type: 'adsterra' },
+      'exit-intent':    { enabled: true, sizes: ['responsive'], type: 'adsterra' }
     },
     settings: {
       autoOptimize: true,
