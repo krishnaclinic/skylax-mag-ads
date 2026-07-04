@@ -470,65 +470,37 @@
   // ─── Ad Blocker Detection ────────────────────────────────
 
   function setupAdBlockerDetection() {
-    // Multiple bait elements with common ad-blocker targets
-    var baits = [
-      { tag: 'div',  cls: 'ad-unit adsbox',          attr: 'data-ad-slot' },
-      { tag: 'div',  cls: 'ad-banner ad placement',   attr: 'id' },
-      { tag: 'ins',  cls: 'adsbygoogle',              attr: 'data-ad-client' },
-      { tag: 'div',  cls: 'adsterra-native-bait',     attr: 'data-ad' }
-    ];
-
-    var baitEls = [];
-    for (var i = 0; i < baits.length; i++) {
-      var el = document.createElement(baits[i].tag);
-      el.className = baits[i].cls;
-      el.setAttribute(baits[i].attr, 'bait');
-      el.innerHTML = '&nbsp;';
-      el.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
-      document.body.appendChild(el);
-      baitEls.push(el);
-    }
-
-    // Also check if Adsterra script actually loaded
-    var adScriptLoaded = false;
-    var scripts = document.querySelectorAll('script[src*="effectivecpmnetwork"]');
-    if (scripts.length > 0) {
-      adScriptLoaded = true;
-    }
+    // Create bait element with common ad-blocker target class
+    var bait = document.createElement('div');
+    bait.className = 'adsbox ad-unit';
+    bait.innerHTML = '&nbsp;';
+    bait.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
+    document.body.appendChild(bait);
 
     setTimeout(function() {
-      var blocked = false;
-      for (var j = 0; j < baitEls.length; j++) {
-        if (baitEls[j].offsetHeight === 0 || baitEls[j].clientHeight === 0 ||
-            getComputedStyle(baitEls[j]).display === 'none') {
-          blocked = true;
-          break;
-        }
-      }
+      var isBlocked = (bait.offsetHeight === 0 || bait.clientHeight === 0 ||
+                       getComputedStyle(bait).display === 'none');
+      bait.remove();
 
-      // Clean up bait elements
-      for (var k = 0; k < baitEls.length; k++) {
-        baitEls[k].remove();
-      }
-
-      if (blocked || !adScriptLoaded) {
-        log('Ad blocker detected');
+      if (isBlocked) {
+        log('Ad blocker detected — showing fallback');
         showAdBlockerFallback();
+      } else {
+        log('No ad blocker detected');
       }
-    }, 300);
+    }, 500);
   }
 
   function showAdBlockerFallback() {
-    // Target both .ad-slot (smart-ads) and .ad-container (theme inline ads)
-    var selectors = '.ad-slot, .ad-container, .ad-after-title, .ad-after-content, .ad-sidebar, .ad-footer';
-    var slots = document.querySelectorAll(selectors);
-    for (var i = 0; i < slots.length; i++) {
-      slots[i].innerHTML = '<div style="background:#f0f2f5;border:1px solid #e0e0e0;border-radius:8px;padding:20px;text-align:center;color:#666;font-size:13px;">' +
-        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>' +
+    var containers = document.querySelectorAll('.ad-container');
+    for (var i = 0; i < containers.length; i++) {
+      var c = containers[i];
+      // Don't replace if ad actually loaded (has iframe or script content)
+      if (c.querySelector('iframe') || c.querySelector('script[src*="highperformanceformat"]')) continue;
+      c.innerHTML = '<div style="background:#f0f2f5;border:1px solid #e0e0e0;border-radius:8px;padding:20px;text-align:center;color:#666;font-size:13px;">' +
         '<div style="font-weight:600;margin-bottom:4px;">Ad blocked</div>' +
         '<div style="font-size:12px;color:#999;">Disable your ad blocker to support Skylax Mag</div>' +
         '</div>';
-      slots[i].style.display = 'block';
     }
   }
 
