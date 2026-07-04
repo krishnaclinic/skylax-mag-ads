@@ -52,6 +52,7 @@
   function init() {
     config = loadConfig();
     detectViewport();
+    injectThemeAds();
     setupLazyLoading();
     injectInContentAds();
     setupStickySidebar();
@@ -136,6 +137,71 @@
           ins.style.height = parts[1] + 'px';
         }
       }
+    }
+  }
+
+  // ─── Theme Ad Injection ──────────────────────────────────
+
+  var injectedSlots = {};
+
+  function injectThemeAds() {
+    var containers = document.querySelectorAll('.ad-container');
+    var slotIndex = 0;
+
+    for (var i = 0; i < containers.length; i++) {
+      var container = containers[i];
+      var slotId = container.getAttribute('data-ad-slot');
+
+      // Skip if already injected or no slot ID
+      if (!slotId || injectedSlots[slotId]) continue;
+
+      // Skip header — it already has invoke.js loaded in theme
+      if (slotId === 'header') {
+        injectedSlots[slotId] = true;
+        adsLoaded++;
+        continue;
+      }
+
+      // Skip if ad not enabled in config
+      if (!config.adSlots[slotId] || !config.adSlots[slotId].enabled) continue;
+
+      // Skip if max ads reached
+      if (adsLoaded >= config.settings.maxAdsPerPage) {
+        container.style.display = 'none';
+        continue;
+      }
+
+      // Inject Adsterra native ad with unique container ID
+      var uniqueId = 'adsterra-slot-' + slotId + '-' + Date.now();
+      var scriptSrc = config.networks.adsterra.nativeCode;
+
+      // Extract script URL from the native code
+      var scriptMatch = scriptSrc.match(/src=['"]([^'"]+)['"]/);
+      if (!scriptMatch) continue;
+
+      // Create script tag
+      var script = document.createElement('script');
+      script.async = true;
+      script.setAttribute('data-cfasync', 'false');
+      script.src = scriptMatch[1];
+
+      // Create unique container div
+      var adDiv = document.createElement('div');
+      adDiv.id = uniqueId;
+
+      // Clear container and inject
+      var label = container.querySelector('.ad-label');
+      container.innerHTML = '';
+      if (label) container.appendChild(label);
+      container.appendChild(script);
+      container.appendChild(adDiv);
+
+      injectedSlots[slotId] = true;
+      adsLoaded++;
+      trackImpression(slotId);
+      log('Injected ad: ' + slotId + ' → ' + uniqueId);
+
+      slotIndex++;
     }
   }
 
@@ -448,26 +514,65 @@
   // ─── Ad Blocker Detection ────────────────────────────────
 
   function setupAdBlockerDetection() {
-    var testAd = document.createElement('div');
-    testAd.innerHTML = '&nbsp;';
-    testAd.className = 'adsbox ad-banner';
-    testAd.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
+    // Multiple bait elements with common ad-blocker targets
+    var baits = [
+      { tag: 'div',  cls: 'ad-unit adsbox',          attr: 'data-ad-slot' },
+      { tag: 'div',  cls: 'ad-banner ad placement',   attr: 'id' },
+      { tag: 'ins',  cls: 'adsbygoogle',              attr: 'data-ad-client' },
+      { tag: 'div',  cls: 'adsterra-native-bait',     attr: 'data-ad' }
+    ];
 
-    document.body.appendChild(testAd);
+    var baitEls = [];
+    for (var i = 0; i < baits.length; i++) {
+      var el = document.createElement(baits[i].tag);
+      el.className = baits[i].cls;
+      el.setAttribute(baits[i].attr, 'bait');
+      el.innerHTML = '&nbsp;';
+      el.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
+      document.body.appendChild(el);
+      baitEls.push(el);
+    }
+
+    // Also check if Adsterra script actually loaded
+    var adScriptLoaded = false;
+    var scripts = document.querySelectorAll('script[src*="effectivecpmnetwork"]');
+    if (scripts.length > 0) {
+      adScriptLoaded = true;
+    }
 
     setTimeout(function() {
-      if (testAd.offsetHeight === 0 || testAd.clientHeight === 0) {
+      var blocked = false;
+      for (var j = 0; j < baitEls.length; j++) {
+        if (baitEls[j].offsetHeight === 0 || baitEls[j].clientHeight === 0 ||
+            getComputedStyle(baitEls[j]).display === 'none') {
+          blocked = true;
+          break;
+        }
+      }
+
+      // Clean up bait elements
+      for (var k = 0; k < baitEls.length; k++) {
+        baitEls[k].remove();
+      }
+
+      if (blocked || !adScriptLoaded) {
         log('Ad blocker detected');
         showAdBlockerFallback();
       }
-      testAd.remove();
-    }, 100);
+    }, 300);
   }
 
   function showAdBlockerFallback() {
-    var slots = document.querySelectorAll('.ad-slot');
+    // Target both .ad-slot (smart-ads) and .ad-container (theme inline ads)
+    var selectors = '.ad-slot, .ad-container, .ad-after-title, .ad-after-content, .ad-sidebar, .ad-footer';
+    var slots = document.querySelectorAll(selectors);
     for (var i = 0; i < slots.length; i++) {
-      slots[i].innerHTML = '<div style="background:#f0f2f5;border-radius:8px;padding:15px;text-align:center;color:#666;font-size:12px;">Support Skylax Mag — disable your ad blocker</div>';
+      slots[i].innerHTML = '<div style="background:#f0f2f5;border:1px solid #e0e0e0;border-radius:8px;padding:20px;text-align:center;color:#666;font-size:13px;">' +
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>' +
+        '<div style="font-weight:600;margin-bottom:4px;">Ad blocked</div>' +
+        '<div style="font-size:12px;color:#999;">Disable your ad blocker to support Skylax Mag</div>' +
+        '</div>';
+      slots[i].style.display = 'block';
     }
   }
 
